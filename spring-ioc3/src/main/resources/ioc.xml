@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--    实验15：通过注解分别创建Dao、Service、Controller【★】-->
+
+    <!--    IOC 操作 Bean 管理(基于注解方式)-->
+    <!--        1、什么是注解-->
+    <!--            （1）注解是代码特殊标记，格式：@注解名称(属性名称=属性值, 属性名称=属性值…)-->
+    <!--            （2）使用注解，注解作用在类上面，方法上面，属性上面-->
+    <!--            （3）使用注解目的：简化 xml 配置-->
+
+    <!--        2、Spring 针对 Bean 管理中创建对象提供注解-->
+    <!--        下面四个注解功能是一样的，都可以用来创建 bean 实例-->
+    <!--            （1）@Component-->
+    <!--            （2）@Service-->
+    <!--            （3）@Controller-->
+    <!--            （4）@Repository-->
+    <!--        ⑤组件命名规则-->
+    <!--            [1]默认情况：使用组件的为简单类名首字母小写后得到的字符串作为bean的id-->
+    <!--            [2]使用组件注解的value属性指定bean的id-->
+    <!--     注意：  事实上Spring并没有能力识别一个组件到底是不是它所标记的类型，
+                  即使将@Respository注解用在一个表述层控制器组件上面也不会产生任何错误，
+                  所以@Respository、@Service、@Controller这几个注解仅仅是为了让开发人员自己明确当前的组件扮演的角色。-->
+
+    <!--    使用注解将组件快速的加入到容器中需要几步：-->
+    <!--        1）给需要添加的组件上标四个注解的任何一个-->
+    <!--        2）告诉Spring自动扫描加了注解的组件；依赖【context】名称空间-->
+    <!--        3）一定要导入aop包，才支持加注解模式 （使用maven就没有那么麻烦） -->
+
+    <!--    扫描组件-->
+    <!--        context:component-scan标签：-->
+    <!--            自动组件扫描-->
+    <!--        base-package属性：-->
+    <!--            指定扫描的基础包；把基础包及下面所有包的所有加了注解的类，自动扫描进ioc容器中-->
+
+    <context:component-scan base-package="com.liobio"/>
+
+    <!--    实验16：使用context:include-filter指定扫描包时要包含的类—包含-->
+    <!--        只扫描进那些组件；默认都是全部扫描-->
+    <!--        一定要禁用掉默认的过滤规则才行：-->
+    <!--        use-default-filters属性=“false”-->
+
+    <!--    实验17：使用context:exclude-filter指定扫描包时不包含的类—排除-->
+    <!--
+            扫描的时候可以排除不要的组件
+                【type="annotation"】：指定排除某个注解。标注指定注解的组件不要扫描
+                 expression属性：指定注解类型的全类名
+                【type=assignable】：指定排除某个具体的类，按照类排除
+                expression属性：指定类的全类名
+                type=aspectj：后来aspectj表达式
+                type=custom：自定义一个TypeFilter；自己写代码觉得排除规则，编写一个类实现TypeFilter类的match()方法
+                tyoe=regex：正则表达式
+    -->
+
+
+</beans>

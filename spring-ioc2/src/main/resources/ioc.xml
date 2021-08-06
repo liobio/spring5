@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--    实验10：创建带有生命周期方法的bean-->
+    <!--    生命周期： bean的创建到销毁；-->
+
+    <!--    ioc容器注册的bean：-->
+    <!--        1、单例bean，容器启动时创建好，容器关闭就销毁-->
+    <!--        2、多例bean，获取时才创建-->
+    <!--    我们可以为bean自定义一些生命周期的方法：spring在创建或者销毁的时候就会调用指定的方法-->
+    <!--    自定义的初始化和销毁方法 必须无参但可以抛任何的异常-->
+
+    <!--    xml-->
+    <!--        destroy-method属性：销毁方法-->
+    <!--        init-method属性：初始化方法-->
+<!--    单例-->
+    <bean id="book01" class="com.liobio.bean.Book"
+            destroy-method="mydestory" init-method="myInit" scope="singleton">
+
+    </bean>
+<!--    多例-->
+    <bean id="book02" class="com.liobio.bean.Book"
+          destroy-method="mydestory" init-method="myInit" scope="prototype">
+
+    </bean>
+
+    <!--实验11：测试bean的后置处理器:BeanPostProcessor
+    Spring有一个接口，后置处理器：可以在bean的初始化前后调用方法；
+    无论bean是否有初始化方法；后置处理器都会工作，默认其有，还会继续工作
+    -->
+    <bean id="myBeanPostProcessor" class="com.liobio.bean.MyBeanPostProcessor" ></bean>
+    <bean id="person-test" class="com.liobio.bean.Person"></bean>
+
+
+</beans>

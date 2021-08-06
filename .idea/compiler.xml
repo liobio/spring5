@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="untitled" />
+        <module name="spring-aop1" />
+        <module name="spring-tx01" />
+        <module name="spring-ioc3" />
+        <module name="spring-ioc1" />
+        <module name="spring-ioc2" />
+        <module name="spring-aop2" />
+        <module name="spring-aop3-xml" />
+        <module name="JdbcTemplate" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

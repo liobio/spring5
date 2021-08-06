@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+        <!--基于配置的AOP @Component-->
+    <bean id="myMathCalculator" class="com.liobio.impl.MyMathCalculator"></bean>
+    <bean id="logUtils" class="com.liobio.utils.LogUtils"></bean>
+    <bean id="validateApsect" class="com.liobio.utils.ValidataAspect"></bean>
+    <aop:config>
+        <!--指定切面 @Aspect-->
+        <aop:aspect ref="logUtils">
+            <aop:pointcut id="myPoint" expression="execution(public int com.liobio.impl.MyMathCalculator.*(int ,int ))"/>
+            <!--配置哪个方法是前置通知 method属性：指定方法名
+            logStart @Before("切入点表达式")
+            -->
+            <aop:before method="logStart" pointcut="execution(* com.liobio.impl.*.*(..))"></aop:before>
+            <aop:after-returning method="logReturn" pointcut-ref="myPoint" returning="result"></aop:after-returning>
+            <aop:after-throwing method="logException" pointcut-ref="myPoint" throwing="e"></aop:after-throwing>
+            <aop:after method="logEnd" pointcut-ref="myPoint"></aop:after>
+            <aop:around method="myAround" pointcut-ref="myPoint"></aop:around>
+        </aop:aspect>
+
+        <aop:aspect ref="validateApsect">
+            <aop:pointcut id="myPoint" expression="execution(public int com.liobio.impl.MyMathCalculator.*(int ,int ))"/>
+            <aop:before method="logStart" pointcut-ref="myPoint"></aop:before>
+            <aop:after-returning method="logReturn" pointcut-ref="myPoint" returning="result"></aop:after-returning>
+            <aop:after-throwing method="logException" pointcut-ref="myPoint" throwing="e"></aop:after-throwing>
+            <aop:after method="logEnd" pointcut-ref="myPoint"></aop:after>
+        </aop:aspect>
+    </aop:config>
+
+
+
+</beans>

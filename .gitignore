@@ -1,0 +1,8 @@
+# Project exclude paths
+/JdbcTemplate/target/
+/spring-aop1/target/
+/spring-aop2/target/
+/spring-ioc1/target/
+/spring-ioc2/target/
+/spring-ioc3/target/
+/spring-tx01/target/

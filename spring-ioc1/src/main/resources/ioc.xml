@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--注册一个Person对象，Spring会自动创建这个Person对象-->
+    <!--一个bean标签可以注册一个组件（对象，类）
+    class：写要注册的组件全类名
+    id：这个对象的唯一标识
+    -->
+    <bean id="person1" class="com.liobio.bean.Person">
+        <!--使用property标签为Person对象的属性赋值
+         name="lastName": 指定属性名
+         value="赵云": 指定属性值
+         -->
+        <property name="lastName" value="赵云"></property>
+        <property name="age" value="18"></property>
+        <property name="email" value="zhaoyun@liobio.com"></property>
+        <property name="gender" value="男"></property>
+
+     </bean>
+
+    <bean id="person02" class="com.liobio.bean.Person">
+        <property name="lastName" value="真田幸村"></property>
+        <property name="age" value="19"></property>
+        <property name="email" value="zhentianxincun@achang.com"></property>
+        <property name="gender" value="男"></property>
+    </bean>
+    <bean id="person03" class="com.liobio.bean.Person">
+        <!-- 调用有参构造器创建赋值 【掌握】-->
+        <!-- public Person(String lastName, Integer age, String gender, String email) -->
+        <constructor-arg name="lastName" value="孙坚"></constructor-arg>
+        <constructor-arg name="age" value="35"></constructor-arg>
+        <constructor-arg name="email" value="sunjian@achang.com" ></constructor-arg>
+        <constructor-arg name="gender" value="男"></constructor-arg>
+    </bean>
+
+    <!--省略name属性，需要严格按照构造器的参数位置书写
+           index属性：指定对应参数的索引下标，从0开始，
+           value属性：设置参数的值
+     -->
+    <bean id="person04" class="com.liobio.bean.Person">
+        <constructor-arg value="凌统"></constructor-arg>
+        <constructor-arg value="25"></constructor-arg>
+        <constructor-arg value="男" index="2"></constructor-arg>
+        <constructor-arg value="lingtong@achang.com"></constructor-arg>
+
+    </bean>
+
+
+    </beans>

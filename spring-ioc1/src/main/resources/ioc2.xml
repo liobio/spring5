@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="car01" class="com.liobio.bean.Car">
+        <property name="carname" value="大泵"></property>
+        <property name="color" value="绿色"></property>
+        <property name="price" value="3000"></property>
+    </bean>
+
+    <!--    测试使用null值-->
+    <bean  id="person01" class="com.liobio.bean.Person">
+        <property name="lastName">
+            <!--复杂赋值-->
+            <null></null>
+        </property>
+    </bean>
+
+    <!--    外部引用，通过ref属性：引用↓-->
+    <bean id="person02" class="com.liobio.bean.Person" >
+        <property name="car" ref="car01"></property>
+    </bean>
+
+    <!--    引用内部bean↓ ，在property标签里面在嵌套一个bean标签-->
+    <!--    内部bean无法根据id去调用********-->
+    <bean id="person03" class="com.liobio.bean.Person" >
+        <property name="car">
+            <!--内部bean-->
+            <bean class="com.liobio.bean.Car">
+                <property name="carname" value="自行车"></property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="book01" class="com.liobio.bean.Book">
+        <property name="bookname" value="三国演义"></property>
+        <property name="author" value="罗贯中"></property>
+    </bean>
+
+    <bean id="person04" class="com.liobio.bean.Person">
+        <property name="books">
+            <!--book = new ArrayList<Book>();-->
+            <list>
+            <!--list标签体中，添加每一个元素-->
+                <!--引用外部元素-->
+                <ref bean="book01"></ref>
+                <!--引用内部元素
+                内部bean不能被获取，只能内部使用-->
+                <bean id="book02" class="com.liobio.bean.Book" p:bookname="西游记"></bean>
+            </list>
+        </property>
+
+        <property name="map">
+
+            <!-- map = new LinkedHashMap<>(); -->
+            <map>
+                <!-- 一个entry标签等于一个键值对 -->
+                <entry key="姓名" value="刘备"></entry>
+                <entry key="编号" value="18"></entry>
+                <!--引用外部元素-->
+                <entry key="书1" value-ref="book01"></entry>
+                <entry key="书2">
+                    <!--引用内部元素-->
+                    <bean class="com.liobio.bean.Book">
+                        <property name="bookname" value="转行成功手册"></property>
+                    </bean>
+                </entry>
+                <entry key="">
+                    <map></map>
+                </entry>
+            </map>
+
+        </property>
+        <property name="properties">
+            <!-- properties = new Properties();-->
+            <props>
+                <!--所有的K=V都String，值直接写在标签体中-->
+                <prop key="password">00000</prop>
+                <prop key="username">root</prop>
+            </props>
+
+        </property>
+    </bean>
+
+<!--    util名称空间创建集合类型的bean-->
+<!--    可以通过id直接获取；-->
+<!--    或者在别的标签中通过ref属性引用其id-->
+    <bean id="person05" class="com.liobio.bean.Person">
+        <property name="map" ref="mymap"></property>
+    </bean>
+
+    <util:map id="mymap">
+        <!--    map = new LinkedHashMap<>()-->
+        <!--    一个entry代表一个key value键值对 -->
+        <entry key="key01" value="张三"></entry>
+        <entry key="key02" value="18"></entry>
+        <entry key="key03" value-ref="book01"></entry>
+        <entry key="key04">
+            <bean class="com.liobio.bean.Car">
+                <property name="carname" value="baoma"></property>
+            </bean>
+        </entry>
+    </util:map>
+
+<!--    级联属性赋值-->
+<!--    carName属性是Car类的属性，Car类的car对象是Person类的属性，carName属性是Person类的级联属性-->
+<!--    级联属性： 属性的属性-->
+<!--    级联属性可以修改属性的属性，注意，原来的bean的值可能会被修改-->
+    <bean id="person06" class="com.liobio.bean.Person" >
+        <!--为car赋值的时候。改变car的价格-->
+        <property name="car" ref="car01"></property>
+        <property name="car.price" value="9999"></property>
+    </bean>
+    <!--实验6：通过继承实现bean配置信息的重用-->
+    <bean id="person07" class="com.liobio.bean.Person">
+        <property name="lastName" value="周瑜"></property>
+        <property name="age" value="18"></property>
+        <property name="gender" value="男"></property>
+        <property name="email" value="zhouyu@achang.com"></property>
+    </bean>
+
+    <!--parent属性：指定当前bean的配置信息继承于哪个-->
+    <bean id="person08" parent="person07">
+        <property name="lastName" value="继承person07"></property>
+    </bean>
+
+    <!--    abstract="true" 这个bean是抽象的，不能获取实例，只能被继承-->
+    <bean id="person09" class="com.liobio.bean.Person" abstract="true">
+        <property name="lastName" value="liobio"></property>
+        <property name="age" value="18"></property>
+        <property name="gender" value="男"></property>
+        <property name="email" value="zhouyu@achang.com"></property>
+    </bean>
+
+    <!--parent属性：指定当前bean的配置信息继承于哪个-->
+    <bean id="person10" parent="person09">
+        <property name="lastName" value="孙策"></property>
+    </bean>
+
+
+
+
+
+
+
+
+
+</beans>

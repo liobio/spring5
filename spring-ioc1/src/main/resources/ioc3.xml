@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<!--    scope属性：设置单例模式、多例模式-->
+
+<!--    singleton：单实例模式；默认-->
+<!--    1）在容器启动完成之前，就已经创建好对象，并保存在容器中-->
+<!--    2）任何时候获取都是获取之前创建好的那个对象-->
+<!--    prototype：多实例模式；-->
+<!--    1）在容器启动默认不会去创建多实例bean-->
+<!--    2）获取时，才创建bean-->
+<!--    3）每次获取都会创建一个新的实例，每次都会调用构造器创建-->
+    <bean class="com.liobio.bean.Car" id="car" scope="prototype"></bean>
+    <bean class="com.liobio.bean.Book" id="book" scope="singleton"></bean>
+
+
+<!--    静态工厂（不需要创建工厂本身）-->
+<!--    factory-method属性：指定哪个方法是工厂方法-->
+<!--    class属性：指定静态工厂的全类名-->
+<!--    constructor-arg标签：为工厂方法传参-->
+    <bean id="airPlane01" class="com.liobio.factory.AirPlaneStaticFactory"
+          factory-method="getAirPlane">
+        <!--可以为方法指定参数-->
+        <constructor-arg value="刘烨"></constructor-arg>
+    </bean>
+
+<!--    实例工厂（需要创建工厂本身）-->
+<!--    factory-method属性：指定这个实例工厂中哪个方法是工厂方法-->
+<!--    factory-bean属性：指定当前bean对象创建使用哪个工厂-->
+
+<!--    constructor-arg标签：可以为工厂方法传参-->
+
+<!--    创建流程-->
+
+<!--    一、先配置出实例工厂对象，相当于先new了一个工厂对象-->
+
+<!--    二、配置要创建的AirPlane使用哪个工厂创建-->
+<!--    1、 factory-bean属性：指定当前bean对象创建使用哪个工厂-->
+<!--    2、factory-method属性：指定这个实例工厂中哪个方法是工厂方法-->
+<!--    3、constructor-arg标签：设置工厂方法的参数-->
+
+    <bean id="airPlaneInstanceFactory"
+          class="com.liobio.factory.AirPlaneInstanceFactory" ></bean>
+
+    <bean class="com.liobio.bean.Airplane" id="airPlane02"
+          factory-bean="airPlaneInstanceFactory" factory-method="getAirPlane"
+    >
+        <constructor-arg value="李磊"></constructor-arg>
+    </bean>
+
+<!--    FactoryBean★（是Spring规定的一个接口）-->
+<!--    只要是这个接口的实现类，Spring都认为是一个工厂-->
+<!--    ioc容器启动时，不会创建实例-->
+    <bean id="factoryBean"
+          class="com.liobio.factory.MyFactoryBeanImpl" ></bean>
+
+
+
+
+
+
+</beans>

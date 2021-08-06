@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans     http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--实验12：引用外部属性文件【★】-->
+    <!--数据库连接池作为单例是最好的；一个项目就一个连接池，连接池里面管理很多连接。连接是直接从连接池里拿-->
+    <!--可以让Spring帮我们创建连接池对象，（管理连接池）-->
+    <context:property-placeholder  location="classpath:dbconfig.properties"/>
+    <!--    注解一定要放在Bean的外面-->
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--username是Spring的key中的一个关键字；为了防止配置文件中与spring关键字冲突-->
+        <!-- ${username}=系统用户名 所以不能直接用 需要加个前缀或者不同的名称-->
+        <property name="username" value="${prop.username}"></property>
+        <property name="password" value="${prop.password}"></property>
+        <property name="url" value="${prop.url}"></property>
+        <property name="driverClassName" value="${prop.driverClassName}"></property>
+    </bean>
+<!--    <bean id="car01" class="com.liobio.bean.Car">-->
+<!--        <property name="carname" value="${username}"></property>-->
+<!--    </bean>-->
+
+<!--    实验13：基于XML的自动装配（自动赋值）-->
+<!--    自动赋值（自动装配）：仅限于对自定义类型的属性有效；自动的为属性赋值-->
+<!--    autowire属性：
+            default/no===不自动装配
+            ByType===以属性的类型作为查找依据去容器中找到这个组件
+                1、如果容器中有多个这种类型的组件，会报错
+                2、没找到会装配null
+                car = ioc.getBean(Car.class);
+            constructor===按照构造器进行赋值
+                1、先按照有参构造器参数的类型装配；没有就装配null
+                2、如果类型有多个；参数的名作为id继续匹配；找到就装配，找不到就null
+                3、不会报错
+-->
+<!--    List books：容器可以把容器中的所有book封装list赋值给这个属性-->
+    <bean class="com.liobio.bean.Car" id="car">
+        <property name="carname" value="老坛"></property>
+        <property name="price" value="6000"></property>
+        <property name="color" value="紫色"></property>
+    </bean>
+<!--    <bean class="com.liobio.bean.Book" id="book01">-->
+<!--        <property name="bookname" value="book01"></property>-->
+<!--    </bean>-->
+<!--    <bean class="com.liobio.bean.Book" id="book02">-->
+<!--        <property name="bookname" value="book02"></property>-->
+<!--    </bean>-->
+<!--    <bean class="com.liobio.bean.Book" id="book03">-->
+<!--        <property name="bookname" value="book03"></property>-->
+<!--    </bean>-->
+    <!-- 为Person里面的自定义类型的属性赋值
+    -->
+<!--    <bean id="person01" class="com.liobio.bean.Person" autowire="byType"></bean>-->
+<!--        Person{lastName='null', age=null, gender='null', email='null', car=null,-->
+<!--        books=[Book{bookname='book01', author='null'},-->
+<!--        Book{bookname='book02', author='null'},-->
+<!--        Book{bookname='book03', author='null'}-->
+
+<!--    实验14：[SpEL测试I]-->
+<!--    基本语法-->
+<!--    #{T(全类名).静态方法名(参数1,参数2)}-->
+<!--    1-->
+<!--    —在SpEL中使用字面量、-->
+<!--    —引用其他bean、-->
+<!--    —引用其他bean的某个属性值、-->
+<!--    —调用非静态方法-->
+<!--    —调用静态方法、-->
+<!--    —使用运算符-->
+    <bean id="person02" class="com.liobio.bean.Person" >
+        <!--字面量：${}；       #{}-->
+        <property name="age" value="#{6*12}"></property>
+        <!-- 引用其他bean的某个属性值-->
+        <property name="lastName" value="#{car.carname}"></property>
+        <property name="car" value="#{car}"></property>
+        <!--调用静态方法：UUID.randomUUID().toString() #{T(全类名).静态方法名(参数1,参数2)} -->
+        <property name="email" value="#{T(java.util.UUID).randomUUID().toString()}"></property>
+        <!--调用非静态方法; 对象.方法名 -->
+        <property name="gender" value="#{car.getCarname()}"></property>
+    </bean>
+
+</beans>
